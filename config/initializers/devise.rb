@@ -277,8 +277,8 @@ Devise.setup do |config|
 
   # Add your ID and secret here
   # ID first, secret second
-  config.omniauth :facebook, ENV["facebook_key"], ENV["facebook_secret"]
-  config.omniauth :twitter, ENV["twitter_key"], ENV["twitter_secret"]
-  config.omniauth :linked_in, ENV["linked_in_key"], ENV["linked_in_secret"]
-  config.omniauth :google, ENV["google_key"], ENV["google_secret"]
+  config.omniauth :facebook, ENV['facebook_key'], ENV['facebook_secret']
+  config.omniauth :twitter, ENV['twitter_key'], ENV['twitter_secret']
+  config.omniauth :linkedin, ENV['linkedin_key'], ENV['linkedin_secret']
+  config.omniauth :google_oauth2, ENV['google_key'], ENV['google_secret']
 end

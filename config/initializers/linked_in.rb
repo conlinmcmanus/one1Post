@@ -1,2 +1,2 @@
-linked_in_key = ENV['linked_in_key']
-linked_in_secret = ENV['linked_in_secret']
+linkedin_key = ENV['linkedin_key']
+linkedin_secret = ENV['linkedin_secret']

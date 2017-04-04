@@ -1,6 +1,6 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :facebook, Figaro.env.facebook_key, Figaro.env.facebook_secret
-  provider :twitter, Figaro.env.twitter_key, Figaro.env.twitter_secret
-  provider :linked_in, Figaro.env.linked_in_key, Figaro.env.linked_in_secret
-  provider :google, Figaro.env.google_key, Figaro.env.google_secret
+  provider :facebook, ENV['facebook_key'], ENV['facebook_secret']
+  provider :twitter, ENV['twitter_key'], ENV['twitter_secret']
+  provider :linkedin, ENV['linkedin_key'], ENV['linkedin_secret'], scope: 'r_basicprofile r_emailaddress w_share'
+  provider :google_oauth2, ENV['google_key'], ENV['google_secret'], { name: "google", scope: "email, profile, https://plus.google.com/", prompt: "select_account" }
 end

@@ -20,4 +20,8 @@ class ApplicationController < ActionController::Base
       redirect_to finish_signup_path(current_user)
     end
   end
+
+  def after_sign_in_path_for(_resource)
+    request.env['omniauth.origin'] || root_path
+  end
 end
