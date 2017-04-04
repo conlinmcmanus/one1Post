@@ -1,21 +1,48 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
+  # def self.provides_callback_for(provider)
+  #   class_eval %{
+  #     def #{provider}
+  #       @user = User.from_omniauth(env["omniauth.auth"], current_user)
+
+  #       if @user.persisted?
+  #         flash[:notice] = I18n.t "devise.omniauth_callbacks.success", kind: "#{provider}".capitalize
+  #         sign_in_and_redirect @user, event: :authentication
+  #       else
+  #         session["devise.#{provider}_data"] = request.env["omniauth.auth"].except(:extra)
+  #         redirect_to new_user_registration_url, alert: @user.errors.full_messages.join("\n")
+  #       end
+  #     end
+  #   }
+  # end
+
+  # %w[twitter facebook linkedin google_oauth2].each do |provider|
+  #   provides_callback_for provider
+  # end
   def self.provides_callback_for(provider)
     class_eval %{
       def #{provider}
-        @user = User.from_omniauth(env["omniauth.auth"], current_user)
+        @user = User.find_for_oauth(env["omniauth.auth"], current_user)
 
         if @user.persisted?
-          flash[:notice] = I18n.t "devise.omniauth_callbacks.success", kind: "#{provider}".capitalize
           sign_in_and_redirect @user, event: :authentication
+          set_flash_message(:notice, :success, kind: "#{provider}".capitalize) if is_navigational_format?
         else
-          session["devise.#{provider}_data"] = request.env["omniauth.auth"].except(:extra)
-          redirect_to new_user_registration_url, alert: @user.errors.full_messages.join("\n")
+          session["devise.#{provider}_data"] = env["omniauth.auth"]
+          redirect_to new_user_registration_url
         end
       end
     }
+   end
+
+  %i[twitter facebook linked_in google_oauth2].each do |provider|
+    provides_callback_for provider
   end
 
-  %w[twitter facebook linkedin google_oauth2].each do |provider|
-    provides_callback_for provider
+  def after_sign_in_path_for(resource)
+    if resource.email_verified?
+      super resource
+    else
+      finish_signup_path(resource)
+    end
   end
 end
