@@ -86,8 +86,8 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'one1post.herokuapp.com' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    :address => "127.0.0.1",
-    :port    => 25,
-    :domain  => 'gmail.com'
+    address: '127.0.0.1',
+    port: 25,
+    domain: 'gmail.com'
   }
 end
