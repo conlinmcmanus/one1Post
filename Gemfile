@@ -32,9 +32,9 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 gem 'devise'
 gem 'figaro'
+gem 'linkedin-oauth2'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
-gem "linkedin-oauth2"
 gem 'omniauth-linkedin-oauth2'
 gem 'omniauth-twitter'
 gem 'twitter'
