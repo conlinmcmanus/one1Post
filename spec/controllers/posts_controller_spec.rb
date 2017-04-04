@@ -14,7 +14,6 @@ RSpec.describe PostsController, type: :controller do
 
   let(:valid_session) { {} }
 
-
   describe 'GET index' do
     it 'assigns all posts by a specific user as @posts' do
       post = Post.create! valid_attributes
@@ -50,10 +49,10 @@ RSpec.describe PostsController, type: :controller do
     context 'with valid params' do
       let(:new_attributes) { { body: 'a new post' } }
       it 'updates an existing post' do
-      post = Post.create! valid_attributes
-      put :update, params: { id: post.to_param, post: new_attributes }, session: valid_session
-      post.reload
-      expect(post.body).to eq('a new post')
+        post = Post.create! valid_attributes
+        put :update, params: { id: post.to_param, post: new_attributes }, session: valid_session
+        post.reload
+        expect(post.body).to eq('a new post')
       end
     end
   end

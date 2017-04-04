@@ -1,6 +1,6 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def self.provides_callback_for(provider)
-    class_eval %Q{
+    class_eval %{
       def #{provider}
         @user = User.find_for_oauth(env["omniauth.auth"], current_user)
 
@@ -15,7 +15,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     }
   end
 
-  [:twitter, :facebook, :linked_in, :google].each do |provider|
+  %i[twitter facebook linked_in google].each do |provider|
     provides_callback_for provider
   end
 

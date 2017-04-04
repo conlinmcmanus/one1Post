@@ -1,16 +1,15 @@
 class User < ApplicationRecord
-  TEMP_EMAIL_PREFIX = 'change@me'
+  TEMP_EMAIL_PREFIX = 'change@me'.freeze
   TEMP_EMAIL_REGEX = /\Achange@me/
 
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable
   devise :database_authenticatable, :registerable, :confirmable,
-    :recoverable, :rememberable, :trackable, :validatable, :omniauthable
+         :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
   validates_format_of :email, without: TEMP_EMAIL_REGEX, on: :update
 
   def self.find_for_oauth(auth, signed_in_resource = nil)
-
     # Get the identity and user if they exist
     identity = Identity.find_for_oauth(auth)
 
@@ -28,15 +27,15 @@ class User < ApplicationRecord
       # user to verify it on the next step via UsersController.finish_signup
       email_is_verified = auth.info.email && (auth.info.verified || auth.info.verified_email)
       email = auth.info.email if email_is_verified
-      user = User.where(:email => email).first if email
+      user = User.where(email: email).first if email
 
       # Create the user if it's a new registration
       if user.nil?
         user = User.new(
           name: auth.extra.raw_info.name,
-          #username: auth.info.nickname || auth.uid,
+          # username: auth.info.nickname || auth.uid,
           email: email ? email : "#{TEMP_EMAIL_PREFIX}-#{auth.uid}-#{auth.provider}.com",
-          password: Devise.friendly_token[0,20]
+          password: Devise.friendly_token[0, 20]
         )
         user.skip_confirmation!
         user.save!
@@ -52,7 +51,29 @@ class User < ApplicationRecord
   end
 
   def email_verified?
-    self.email && self.email !~ TEMP_EMAIL_REGEX
+    email && email !~ TEMP_EMAIL_REGEX
+  end
+
+  def self.from_omniauth(auth)
+    where(auth.slice(:provider, :uid)).first_or_initialize.tap do |user|
+      user.provider = auth.provider
+      user.uid = auth.uid
+      user.name = auth.info.name
+      user.oauth_token = auth.credentials.token
+      user.oauth_secret = auth.credentials.secret
+      user.save!
+    end
+  end
+
+  def tweet(tweet)
+    client = Twitter::REST::Client.new do |config|
+      config.consumer_key        = Figaro.env.twitter_key
+      config.consumer_secret     = Figaro.env.twitter_secret
+      config.access_token        = oauth_token
+      config.access_token_secret = oauth_secret
+    end
+
+    client.update(tweet)
   end
 
   has_many :posts

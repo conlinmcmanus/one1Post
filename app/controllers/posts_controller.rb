@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :find_post, only: [:destroy, :update, :edit]
+  before_action :find_post, only: %i[destroy update edit]
 
   def index
     @posts = Post.where(user_id: current_user.id).order(:created_at)
@@ -18,8 +18,7 @@ class PostsController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @post.update(post_params)
