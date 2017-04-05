@@ -6,6 +6,8 @@ class User < ApplicationRecord
   # :lockable, :timeoutable, :confirmable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable, omniauth_providers: %i[facebook twitter linkedin google_oauth2]
 
+  has_many :posts
+
   validates_format_of :email, without: TEMP_EMAIL_REGEX, on: :update
 
   def self.find_for_oauth(auth, signed_in_resource = nil)
@@ -52,5 +54,4 @@ class User < ApplicationRecord
   def email_verified?
     email && email !~ TEMP_EMAIL_REGEX
   end
-  has_many :posts
 end
