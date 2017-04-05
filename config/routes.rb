@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
-  match '/users/:id/finish_signup' => 'users#finish_signup', via: %i[get patch], :as => :finish_signup
-
+  get '/users/:id/finish_signup', to: 'users#finish_signup'
+  patch '/users/:id/finish_signup', to: 'users#finish_signup'
   resources :posts
 
   devise_scope :user do
@@ -12,5 +12,5 @@ Rails.application.routes.draw do
     unauthenticated :user do
       root to: 'devise/sessions#new'
     end
-  end
+  end 
 end
