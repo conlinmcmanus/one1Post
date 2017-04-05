@@ -12,5 +12,4 @@ Rails.application.routes.draw do
       root to: 'devise/sessions#new'
     end
   end
-  match '/users/:id/finish_signup' => 'users#finish_signup', via: %i[get patch], :as => :finish_signup
 end
