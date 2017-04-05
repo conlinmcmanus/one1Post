@@ -100,4 +100,6 @@ Rails.application.configure do
     user_name: ENV['my_gmail_email'],
     password: ENV['my_gmail_password']
   }
+  config.twitter_key = ENV['twitter_key']
+  config.twitter_secret = ENV['twitter_secret']
 end

@@ -54,4 +54,6 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = { address: 'localhost', port: '1025' }
+  config.twitter_key = ENV['twitter_key']
+  config.twitter_secret = ENV['twitter_secret']
 end
