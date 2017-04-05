@@ -36,8 +36,10 @@
     <%= f.password_field :current_password, autocomplete: 'off' %>
   </div>
 
-  <%= link_to 'Forgot your password?', new_password_path(resource_name) %><br />
-  
+  <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+    <%= link_to 'Forgot your password?', new_password_path(resource_name) %><br />
+  <% end -%>
+    
   <div class='actions'>
     <%= f.submit 'Update' %>
   </div>
