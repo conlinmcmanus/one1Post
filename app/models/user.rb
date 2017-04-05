@@ -9,7 +9,6 @@ class User < ApplicationRecord
   has_many :posts, dependent: :delete_all
   has_many :identities, dependent: :delete_all
 
-
   validates_format_of :email, without: TEMP_EMAIL_REGEX, on: :update
 
   def self.find_for_oauth(auth, signed_in_resource = nil)
