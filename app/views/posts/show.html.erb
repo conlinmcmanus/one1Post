@@ -1,0 +1,5 @@
+<%= @post.body %>
+<%= link_to 'Delete', post_path(@post), data: { confirm: 'Delete this post?' }, method: :delete %>
+<%= link_to 'Edit', edit_post_path(@post) %><br/><br/>
+<%= @post.created_at.strftime("%B %e, %Y") %><br/><br/>
+<%= button_to 'Post to Twitter', twitter_post_path(@post) %><br/><br/>

@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   match '/users/:id/finish_signup' => 'users#finish_signup', via: %i[get patch], :as => :finish_signup
   resources :posts
 
+  post '/twitter-post/:id', to: 'posts#send_tweet', as: 'twitter_post'
+
   devise_scope :user do
     authenticated :user do
       root to: 'posts#index'
