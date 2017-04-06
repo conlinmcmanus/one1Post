@@ -12,6 +12,7 @@ class PostsController < ApplicationController
   def show; end
 
   def send_tweet
+    redirect_to user_twitter_omniauth_authorize_path
     twitter_post(@post.body, @post.user_id)
     redirect_to root_path
   end
