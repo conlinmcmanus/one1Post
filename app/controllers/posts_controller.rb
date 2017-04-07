@@ -25,6 +25,10 @@ class PostsController < ApplicationController
     twitter_post(@post.body, @post.user_id)
   end
 
+  def send_fbpost
+    facebook_post(@post.body, @post.user_id)
+  end
+
   def create
     @post = Post.new(post_params)
     if @post.save!
@@ -42,6 +46,13 @@ class PostsController < ApplicationController
       config.access_token_secret = Identity.find(user).oauth_secret
     end
     client.update(post)
+  end
+
+  def facebook_post(post, user)
+    client = Koala::Facebook::API.new do |config|
+      config.access_token = Identity.find(user).oauth_token
+    end
+    client.put_wall_post(post)
   end
 
   def edit; end
