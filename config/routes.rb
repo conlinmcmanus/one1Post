@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   resources :posts
 
   post '/twitter-post/:id', to: 'posts#send_tweet', as: 'twitter_post'
+  post '/google-post/:id', to: 'posts#send_tweet', as: 'google_post'
+  post '/facebook-post/:id', to: 'posts#send_tweet', as: 'facebook_post'
 
   devise_scope :user do
     authenticated :user do

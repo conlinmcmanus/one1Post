@@ -2,4 +2,11 @@
 <%= link_to 'Delete', post_path(@post), data: { confirm: 'Delete this post?' }, method: :delete %>
 <%= link_to 'Edit', edit_post_path(@post) %><br/><br/>
 <%= @post.created_at.strftime("%B %e, %Y") %><br/><br/>
-<%= button_to 'Post to Twitter', twitter_post_path(@post) %><br/><br/>
+<%= link_to 'Back', posts_path %><br/><br/>
+<% ['twitter', 'google_oauth2', 'facebook'].each do |provider| %>
+  <% if @providers.include?("#{provider}") %>
+  <%= button_to "Post to #{provider.capitalize}", "/#{provider}-post/#{@post.id}" %><br/>
+  <% else %>
+  <%= link_to "Link with #{provider.capitalize}", "/users/auth/#{provider}" %><br />
+  <% end %>
+<% end %>

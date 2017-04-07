@@ -2,6 +2,12 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def self.provides_callback_for(provider)
     class_eval %{
       def #{provider}
+        if user_signed_in?
+          if current_user.link_account(request.env["omniauth.auth"], current_user)
+            redirect_to posts_path, notice: "You have successfully linked #{provider}.capitalize to your account."
+          end
+        end
+
         @user = User.find_for_oauth(env["omniauth.auth"], current_user)
 
         if @user.persisted?

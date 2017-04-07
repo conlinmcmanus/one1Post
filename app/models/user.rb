@@ -39,6 +39,15 @@ class User < ApplicationRecord
     user
   end
 
+  def link_account(auth, user)
+    identity = Identity.find_for_oauth(auth)
+    provider = Provider.find_for_oauth(auth)
+    identity.user = user
+    identity.provider = provider
+    provider.save!
+    identity.save!
+  end
+
   def email_verified?
     email && email !~ TEMP_EMAIL_REGEX
   end
