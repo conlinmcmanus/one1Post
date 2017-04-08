@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :find_post, only: %i[show destroy update edit send_tweet send_linkedin_post send_fbpost verify_linked_account]
+  before_action :find_post, only: %i[show destroy update edit twitter_post linkedin_post facebook_post]
 
   def index
     @posts = Post.where(user_id: current_user.id).order(:created_at)
@@ -9,31 +9,8 @@ class PostsController < ApplicationController
     @post = Post.new
   end
 
-  def linked_accounts
-    providers_array = []
-    User.where(id: current_user).first.providers.each do |i|
-      providers_array << i.name
-    end
-    providers_array
-  end
-
   def show
     @providers = linked_accounts
-  end
-
-  def send_tweet
-    twitter_post(@post.body, @post.user_id)
-    redirect_to @post, notice: 'Successfully shared post on Twitter!'
-  end
-
-  def send_fbpost
-    facebook_post(@post.body, @post.user_id)
-    redirect_to @post, notice: 'Successfully shared post on Facebook!'
-  end
-
-  def send_linkedin_post
-    linkedin_post(@post.body, @post.user_id)
-    redirect_to @post, notice: 'Successfully shared post on Linkedin!'
   end
 
   def create
@@ -43,45 +20,6 @@ class PostsController < ApplicationController
     else
       render :new
     end
-  end
-
-  def twitter_post(post, user)
-    client = Twitter::REST::Client.new do |config|
-      config.consumer_key        = ENV['twitter_key']
-      config.consumer_secret     = ENV['twitter_secret']
-      config.access_token        = Identity.where(user_id: user).first.oauth_token
-      config.access_token_secret = Identity.where(user_id: user).first.oauth_secret
-    end
-    client.update(post)
-  end
-
-  def facebook_post(post, user)
-    client = Koala::Facebook::API.new(Identity.where(user_id: user).first.oauth_token)
-    client.put_wall_post(post)
-  end
-
-  def linkedin_post(post, user)
-    client = LinkedIn::Client.new do |config|
-      config.consumer_key        = ENV['linkedin_key']
-      config.consumer_secret     = ENV['linkedin_secret']
-    end
-    client.authorize_from_access(Identity.where(user_id: user).first.oauth_token, Identity.where(user_id: user).first.oauth_secret)
-    client.add_share(comment: post)
-  end
-
-  def unlink_twitter
-    User.where(id: current_user.id).first.identities.where(provider_id: Provider.where(name: 'twitter').first.id).first.destroy
-    redirect_to root_path
-  end
-
-  def unlink_facebook
-    User.where(id: current_user.id).first.identities.where(provider_id: Provider.where(name: 'facebook').first.id).first.destroy
-    redirect_to root_path
-  end
-
-  def unlink_linkedin
-    User.where(id: current_user.id).first.identities.where(provider_id: Provider.where(name: 'linkedin').first.id).first.destroy
-    redirect_to root_path
   end
 
   def edit; end
@@ -97,6 +35,26 @@ class PostsController < ApplicationController
   def destroy
     @post.destroy
     redirect_to posts_path
+  end
+
+  def linked_accounts
+    providers_array = []
+    User.where(id: current_user).first.providers.each do |i|
+      providers_array << i.name
+    end
+    providers_array
+  end
+
+  %w[twitter facebook linkedin].each do |provider|
+    class_eval %{
+      def #{provider}_post
+        if PostTo#{provider.capitalize}.new(post: @post.body, user: @post.user_id).create
+          redirect_to @post, notice: 'Successfully shared post on #{provider.capitalize}!'
+        else
+          redirect_to @post, notice: 'Something went wrong, please try again. If issue persists attempt to unlink and relink account.'
+        end
+      end
+    }
   end
 
   private

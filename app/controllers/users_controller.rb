@@ -50,6 +50,15 @@ class UsersController < ApplicationController
     end
   end
 
+  %w[twitter facebook linkedin google_oauth2].each do |provider|
+    class_eval %{
+      def unlink_#{provider}
+        User.where(id: current_user.id).first.identities.where(provider_id: Provider.where(name: "#{provider}").first.id).first.destroy
+        redirect_to root_path
+      end
+    }
+  end
+
   private
 
   def set_user
