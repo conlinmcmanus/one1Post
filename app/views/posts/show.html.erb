@@ -5,7 +5,7 @@
 <%= link_to 'Back', posts_path %><br/><br/>
 <% ['twitter', 'facebook', 'linkedin'].each do |provider| %>
   <% if @providers.include?("#{provider}") %>
-  <%= button_to "Post to #{provider.capitalize}", "/#{provider}-post/#{@post.id}" %><br/>
+  <%= button_to "Post to #{provider.capitalize}", "/#{provider}-posts/#{@post.id}" %><br/>
   <%= button_to "Unlink #{provider.capitalize}", "/unlink-#{provider}", method: :delete %><br/>
   <% else %>
   <%= link_to "Link with #{provider.capitalize}", "/users/auth/#{provider}" %><br />

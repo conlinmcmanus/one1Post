@@ -23,14 +23,17 @@ class PostsController < ApplicationController
 
   def send_tweet
     twitter_post(@post.body, @post.user_id)
+    redirect_to @post, notice: 'Successfully shared post on Twitter!'
   end
 
   def send_fbpost
     facebook_post(@post.body, @post.user_id)
+    redirect_to @post, notice: 'Successfully shared post on Facebook!'
   end
 
   def send_linkedin_post
     linkedin_post(@post.body, @post.user_id)
+    redirect_to @post, notice: 'Successfully shared post on Linkedin!'
   end
 
   def create
@@ -46,14 +49,14 @@ class PostsController < ApplicationController
     client = Twitter::REST::Client.new do |config|
       config.consumer_key        = ENV['twitter_key']
       config.consumer_secret     = ENV['twitter_secret']
-      config.access_token        = Identity.find(user).oauth_token
-      config.access_token_secret = Identity.find(user).oauth_secret
+      config.access_token        = Identity.where(user_id: user).first.oauth_token
+      config.access_token_secret = Identity.where(user_id: user).first.oauth_secret
     end
     client.update(post)
   end
 
   def facebook_post(post, user)
-    client = Koala::Facebook::API.new(Identity.find(user).oauth_token)
+    client = Koala::Facebook::API.new(Identity.where(user_id: user).first.oauth_token)
     client.put_wall_post(post)
   end
 
@@ -62,7 +65,7 @@ class PostsController < ApplicationController
       config.consumer_key        = ENV['linkedin_key']
       config.consumer_secret     = ENV['linkedin_secret']
     end
-    client.authorize_from_access(Identity.find(user).oauth_token, Identity.find(user).oauth_secret)
+    client.authorize_from_access(Identity.where(user_id: user).first.oauth_token, Identity.where(user_id: user).first.oauth_secret)
     client.add_share(comment: post)
   end
 

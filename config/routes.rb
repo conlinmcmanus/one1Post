@@ -7,9 +7,9 @@ Rails.application.routes.draw do
   delete '/unlink-facebook', to: 'posts#unlink_facebook', as: 'unlink_facebook'
   delete '/unlink-linkedin', to: 'posts#unlink_linkedin', as: 'unlink_linkedin'
 
-  post '/twitter-post/:id', to: 'posts#send_tweet', as: 'twitter_post'
-  post '/facebook-post/:id', to: 'posts#send_fbpost', as: 'facebook_post'
-  post '/linkedin-post/:id', to: 'posts#send_linkedin_post', as: 'linkedin_post'
+  post '/twitter-posts/:id', to: 'posts#send_tweet', as: 'twitter_post'
+  post '/facebook-posts/:id', to: 'posts#send_fbpost', as: 'facebook_post'
+  post '/linkedin-posts/:id', to: 'posts#send_linkedin_post', as: 'linkedin_post'
 
   devise_scope :user do
     authenticated :user do
