@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :find_post, only: %i[show destroy update edit send_tweet verify_linked_account]
+  before_action :find_post, only: %i[show destroy update edit send_tweet send_fbpost verify_linked_account]
 
   def index
     @posts = Post.where(user_id: current_user.id).order(:created_at)
@@ -49,9 +49,7 @@ class PostsController < ApplicationController
   end
 
   def facebook_post(post, user)
-    client = Koala::Facebook::API.new do |config|
-      config.access_token = Identity.find(user).oauth_token
-    end
+    client = Koala::Facebook::API.new(Identity.find(user).oauth_token)
     client.put_wall_post(post)
   end
 
