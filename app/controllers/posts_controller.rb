@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :find_post, only: %i[show destroy update edit send_tweet send_fbpost verify_linked_account]
+  before_action :find_post, only: %i[show destroy update edit send_tweet send_linkedin_post send_fbpost verify_linked_account]
 
   def index
     @posts = Post.where(user_id: current_user.id).order(:created_at)
@@ -29,6 +29,10 @@ class PostsController < ApplicationController
     facebook_post(@post.body, @post.user_id)
   end
 
+  def send_linkedin_post
+    linkedin_post(@post.body, @post.user_id)
+  end
+
   def create
     @post = Post.new(post_params)
     if @post.save!
@@ -51,6 +55,30 @@ class PostsController < ApplicationController
   def facebook_post(post, user)
     client = Koala::Facebook::API.new(Identity.find(user).oauth_token)
     client.put_wall_post(post)
+  end
+
+  def linkedin_post(post, user)
+    client = LinkedIn::Client.new do |config|
+      config.consumer_key        = ENV['linkedin_key']
+      config.consumer_secret     = ENV['linkedin_secret']
+    end
+    client.authorize_from_access(Identity.find(user).oauth_token, Identity.find(user).oauth_secret)
+    client.add_share(comment: post)
+  end
+
+  def unlink_twitter
+    User.where(id: current_user.id).first.identities.where(provider_id: Provider.where(name: 'twitter').first.id).first.destroy
+    redirect_to root_path
+  end
+
+  def unlink_facebook
+    User.where(id: current_user.id).first.identities.where(provider_id: Provider.where(name: 'facebook').first.id).first.destroy
+    redirect_to root_path
+  end
+
+  def unlink_linkedin
+    User.where(id: current_user.id).first.identities.where(provider_id: Provider.where(name: 'linkedin').first.id).first.destroy
+    redirect_to root_path
   end
 
   def edit; end

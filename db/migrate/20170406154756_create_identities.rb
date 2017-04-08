@@ -3,7 +3,7 @@ class CreateIdentities < ActiveRecord::Migration[5.0]
     create_table :identities do |t|
       t.belongs_to :user, foreign_key: true, on_delete: :cascade
       t.belongs_to :provider
-      t.string :uid
+      t.string :uid, unique: true
       t.string :oauth_token
       t.string :oauth_secret
       t.timestamps

@@ -3,9 +3,10 @@
 <%= link_to 'Edit', edit_post_path(@post) %><br/><br/>
 <%= @post.created_at.strftime("%B %e, %Y") %><br/><br/>
 <%= link_to 'Back', posts_path %><br/><br/>
-<% ['twitter', 'google_oauth2', 'facebook'].each do |provider| %>
+<% ['twitter', 'facebook', 'linkedin'].each do |provider| %>
   <% if @providers.include?("#{provider}") %>
   <%= button_to "Post to #{provider.capitalize}", "/#{provider}-post/#{@post.id}" %><br/>
+  <%= button_to "Unlink #{provider.capitalize}", "/unlink-#{provider}", method: :delete %><br/>
   <% else %>
   <%= link_to "Link with #{provider.capitalize}", "/users/auth/#{provider}" %><br />
   <% end %>
