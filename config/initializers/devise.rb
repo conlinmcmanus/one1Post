@@ -279,6 +279,6 @@ Devise.setup do |config|
   # ID first, secret second
   config.omniauth :facebook, ENV['facebook_key'], ENV['facebook_secret']
   config.omniauth :twitter, ENV['twitter_key'], ENV['twitter_secret']
-  config.omniauth :linkedin, ENV['linkedin_key'], ENV['linkedin_secret'], scope: 'r_basicprofile r_emailaddress rw_nus'
+  config.omniauth :linkedin, ENV['linkedin_key'], ENV['linkedin_secret'], scope: 'r_basicprofile r_emailaddress w_share'
   config.omniauth :google_oauth2, ENV['google_key'], ENV['google_secret']
 end
