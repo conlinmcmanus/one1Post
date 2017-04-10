@@ -30,8 +30,12 @@ gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
+gem 'autoprefixer-rails'
+gem 'bootstrap-sass'
+gem 'bootstrap-social-rails'
 gem 'devise'
 gem 'figaro'
+gem 'font-awesome-rails'
 gem 'koala'
 gem 'linkedin'
 gem 'linkedin-oauth2'

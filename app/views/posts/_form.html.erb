@@ -1,4 +1,21 @@
-<%= form_for @post do |f| %>
-  Body: <%= f.text_area :body %>
-  <%= f.submit %>
+<%= form_for (@post) do |f| %>
+  <div class='field form-group'>
+    <%= f.text_area :body, class: 'form-control' %>
+  (<span id="chars">140</span> characters remaining)
+  </div>
+  <div class='actions form-group'>
+    <div>
+    <%= f.submit 'Post', class: 'btn btn-success'%>
+    <%= link_to 'Back', posts_path, class: 'btn btn-primary' %>
+    </div>
+  </div>
 <% end %>
+<script>
+  var maxLength = 140;
+  $('textarea').keyup(function() {
+    var length = $(this).val().length;
+    var length = maxLength-length;
+    $('#chars').text(length);
+  });
+</script>
+

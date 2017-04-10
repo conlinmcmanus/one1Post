@@ -1,13 +1,18 @@
-<h1>Your Posts</h1>
-
-<%= link_to 'Create Post', new_post_path %><br/><br/>
-
+<h2>Your Posts</h2>
 <% if @posts.count == 0 %>
-  <p>You don't have any posts yet.</p>
+<div>
+  You don't have any posts yet.
+</div>
 <% else %>
-  <% @posts.each do |post| %>
-    <%= post.body %>
-    <%= link_to 'View', post_path(post) %><br/><br/>
-    <%= post.created_at.strftime("%B %e, %Y") %><br/><br/>
-  <% end %><br/><br/>
+<% @posts.each do |post| %>
+<div>
+  <div class="well">
+    <%= post.body %><br/><br/>
+    <%= post.created_at.strftime("%B %e, %Y") %>
+    <hr>
+    <%= link_to 'View', post_path(post), class: 'btn btn-primary' %>
+  </div>
+</ul>
+</div><br/>
+<% end %>
 <% end %>

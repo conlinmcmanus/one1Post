@@ -49,9 +49,11 @@ class PostsController < ApplicationController
     class_eval %{
       def #{provider}_post
         if PostTo#{provider.capitalize}.new(post: @post.body, user: @post.user_id).create
-          redirect_to @post, notice: 'Successfully shared post on #{provider.capitalize}!'
+          flash[:success] = 'Successfully shared post on #{provider.capitalize}!'
+          redirect_to @post
         else
-          redirect_to @post, notice: 'Something went wrong, please try again. If issue persists attempt to unlink and relink account.'
+          flash[:danger] = 'Something went wrong, please try again. If issue persists attempt to unlink and relink account.'
+          redirect_to @post
         end
       end
     }

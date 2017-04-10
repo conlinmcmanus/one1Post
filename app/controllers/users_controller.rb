@@ -17,10 +17,11 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.update(user_params)
         sign_in(@user == current_user ? @user : current_user, bypass: true)
-        format.html { redirect_to @user, notice: 'Your profile was successfully updated.' }
+        flash[:success] = 'Your profile was successfully updated.'
+        redirect_to @user
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        render action: 'edit'
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
@@ -33,9 +34,11 @@ class UsersController < ApplicationController
       if @user.update(user_params)
         # @user.skip_reconfirmation!
         sign_in(@user, bypass: true)
-        redirect_to posts_path, notice: 'Your profile was successfully updated.'
+        flash[:success] = 'Your profile was successfully updated.'
+        redirect_to posts_path
       else
-        redirect_to finish_signup_path, notice: 'An account already exists with that email.'
+        flash[:danger] = 'An account already exists with that email.'
+        redirect_to finish_signup_path
       end
     end
   end
@@ -45,7 +48,7 @@ class UsersController < ApplicationController
     # authorize! :delete, @user
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to root_url }
+      redirect_to root_url
       format.json { head :no_content }
     end
   end
