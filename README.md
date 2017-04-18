@@ -1,24 +1,7 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+one1Post
 
-Things you may want to cover:
+Easily post to multiple social media sights from one place! Currently Facebook and Twitter have been intigrated, Linkedin will be coming soon. 
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+https://one1post.herokuapp.com/
