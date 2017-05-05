@@ -45,6 +45,7 @@ gem 'omniauth-linkedin-oauth2'
 gem 'omniauth-oauth2', '1.3.1'
 gem 'omniauth-twitter'
 gem 'twitter'
+gem 'htmlbeautifier'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

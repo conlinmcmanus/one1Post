@@ -1,21 +1,24 @@
 <div class="well">
-  <%= @post.body %><br/><br/>
+  <%= @post.body %><br/>
+  <br/>
   <%= @post.created_at.strftime("%B %e, %Y") %>
   <hr>
   <%= link_to 'Back', posts_path, class: 'btn btn-primary' %>
   <%= link_to 'Edit', edit_post_path(@post), class: 'btn btn-info' %>
-  <%= link_to 'Delete', post_path(@post), data: { confirm: 'Delete this post?' }, method: :delete, class: 'btn btn-danger' %><br/><br/>
+  <%= link_to 'Delete', post_path(@post), data: { confirm: 'Delete this post?' }, method: :delete, class: 'btn btn-danger' %><br/>
+  <br/>
   <% ['twitter', 'facebook'].each do |provider| %>
     <% if @providers.include?("#{provider}") %>
       <div><%= button_to "/#{provider}-posts/#{@post.id}", class: "btn btn-social btn-#{provider}" do %>
-        <span class="fa fa-<%= "#{provider}" %>"></span>Post to <%= "#{provider.capitalize}" %>
-      <% end %></div><br/>
+          <span class="fa fa-<%= "#{provider}" %>"></span>Post to <%= "#{provider.capitalize}" %>
+      <% end %>
+      </div><br/>
       <%= link_to "Unlink #{provider.capitalize}", "/unlink-#{provider}", method: :delete, class: 'btn btn-danger' %><br/><br/>
-    <% else %>
-      <a class="btn btn-social btn-<%= "#{provider}" %>" href="/users/auth/<%= "#{provider}" %>">
-        <span class="fa fa-<%= "#{provider}" %>"></span>
-        Link with <%= "#{provider.capitalize}" %>
-      </a>
-    <% end %>
-  <% end %>
-</div>
+        <% else %>
+          <a class="btn btn-social btn-<%= "#{provider}" %>" href="/users/auth/<%= "#{provider}" %>">
+            <span class="fa fa-<%= "#{provider}" %>"></span>
+            Link with <%= "#{provider.capitalize}" %>
+          </a>
+        <% end %>
+      <% end %>
+    </div>
