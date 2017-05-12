@@ -1,21 +1,21 @@
 <nav class="navbar navbar-default" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <a class="navbar-brand">one1Post</a>
+      <a class="navbar-brand" href="/">one1Post</a>
       <% if current_user %>
-      <ul class="nav navbar-nav">
-        <li><%= link_to new_post_path, class: 'btn btn-success' do %>
-          <i class="glyphicon glyphicon-plus"></i> Create Post
-        <% end %></li>
-        <li><%= link_to 'Posts', posts_path %></li>
-        <li><%= link_to 'Edit Account', edit_user_registration_path %></li>
-        <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>
-      </ul>
+        <ul class="nav navbar-nav">
+          <li><%= link_to new_post_path, class: 'btn btn-success' do %>
+              <i class="glyphicon glyphicon-plus"></i> Create Post
+            <% end %></li>
+          <li><%= link_to 'Posts', posts_path %></li>
+          <li><%= link_to 'Edit Account', edit_user_registration_path %></li>
+          <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>
+        </ul>
       <% else %>
-      <ul class="nav navbar-nav">
-        <li><%= link_to 'Register', new_user_registration_path %></li>
-        <li><%= link_to 'Login', new_user_session_path %></li>
-      </ul>
+        <ul class="nav navbar-nav">
+          <li><%= link_to 'Register', new_user_registration_path %></li>
+          <li><%= link_to 'Login', new_user_session_path %></li>
+        </ul>
       <% end %>
     </div>
   </div>

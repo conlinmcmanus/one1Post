@@ -11,13 +11,5 @@ Rails.application.routes.draw do
   post '/facebook-posts/:id', to: 'posts#facebook_post', as: 'facebook_post'
   post '/linkedin-posts/:id', to: 'posts#linkedin_post', as: 'linkedin_post'
 
-  devise_scope :user do
-    authenticated :user do
-      root to: 'posts#index'
-    end
-
-    unauthenticated :user do
-      root to: 'devise/sessions#new'
-    end
-  end
+  root to: 'home#index'
 end

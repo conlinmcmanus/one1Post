@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+  before_action :authenticate_user!
   before_action :find_post, only: %i[show destroy update edit twitter_post linkedin_post facebook_post]
 
   def index
@@ -16,8 +17,10 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     if @post.save!
+      flash[:success] = 'Post was created successfully.'
       redirect_to @post
     else
+      flash[:danger] = 'Something went wrong, please try again. Please ensure all required fields are filled out.'
       render :new
     end
   end
@@ -49,7 +52,7 @@ class PostsController < ApplicationController
     class_eval %{
       def #{provider}_post
         if PostTo#{provider.capitalize}.new(post: @post.body, user: @post.user_id).create
-          flash[:success] = 'Successfully shared post on #{provider.capitalize}!'
+          flash[:success] = 'Successfully shared post on #{provider.capitalize}.'
           redirect_to @post
         else
           flash[:danger] = 'Something went wrong, please try again. If issue persists attempt to unlink and relink account.'
